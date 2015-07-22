@@ -21,7 +21,7 @@ below.
 from blinker import signal
 from flask import abort, Blueprint, request
 
-from ..util import log_incoming_request_data, respond_no_content
+from ..util import get_all_or_400, log_incoming_request_data, respond_no_content
 
 
 twitter_followed = signal('twitter-followed')
@@ -53,14 +53,3 @@ def mentioned():
     fields = get_all_or_400(data, keys)
 
     twitter_mentioned.send(None, **fields)
-
-
-def get_all_or_400(data, keys):
-    return {key: get_or_400(data, key) for key in keys}
-
-
-def get_or_400(data, key):
-    try:
-        return data[key]
-    except KeyError:
-        abort(400, 'Missing key: ' + key)
