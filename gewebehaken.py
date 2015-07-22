@@ -18,7 +18,7 @@ from logging import FileHandler, Formatter
 from pprint import pformat
 
 from blinker import signal
-from flask import Flask, request, Response
+from flask import Blueprint, current_app, Flask, request, Response
 
 
 DEFAULT_HOST = '127.0.0.1'
@@ -30,7 +30,7 @@ twitter_followed = signal('twitter-followed')
 twitter_mentioned = signal('twitter-mentioned')
 
 
-app = Flask(__name__)
+blueprint = Blueprint('blueprint', __name__)
 
 
 def respond_no_content(f):
@@ -44,7 +44,7 @@ def respond_no_content(f):
     return wrapper
 
 
-@app.route('/twitter/followed', methods=['POST'])
+@blueprint.route('/twitter/followed', methods=['POST'])
 @respond_no_content
 def followed():
     data = request.get_json()
@@ -59,7 +59,7 @@ def followed():
         name=name)
 
 
-@app.route('/twitter/mentioned', methods=['POST'])
+@blueprint.route('/twitter/mentioned', methods=['POST'])
 @respond_no_content
 def mentioned():
     data = request.get_json()
@@ -79,7 +79,7 @@ def mentioned():
 def log_incoming_request_data(data):
     delimiter_line = '-' * 40
     log_message = delimiter_line + '\n' + pformat(data)
-    app.logger.warn(log_message)
+    current_app.logger.warn(log_message)
 
 
 def parse_args():
@@ -111,7 +111,15 @@ def parse_args():
     return parser.parse_args()
 
 
-def configure_logging(filename):
+def create_app():
+    """Create the actual application."""
+    app = Flask(__name__)
+    configure_logging(app, DEFAULT_LOG_FILENAME)
+    return app
+
+
+def configure_logging(app, filename):
+    """Configure app to log to that file."""
     handler = FileHandler(filename, encoding='utf-8')
     handler.setFormatter(Formatter('%(asctime)s %(funcName)s %(message)s'))
     handler.setLevel(logging.INFO)
@@ -121,8 +129,7 @@ def configure_logging(filename):
 if __name__ == '__main__':
     args = parse_args()
 
-    configure_logging(DEFAULT_LOG_FILENAME)
-
+    app = create_app()
     app.run(host=args.host,
             port=args.port,
             debug=args.debug)
