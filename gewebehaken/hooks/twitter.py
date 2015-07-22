@@ -4,7 +4,15 @@
 Gewebehaken
 ~~~~~~~~~~~
 
-Twitter web hooks
+Twitter_ web hooks
+
+These hooks are designed to work with requests sent via the Zapier_
+service. The corresponding "zaps" must be configured to send a JSON
+request body with at least the fields defined in the view functions
+below.
+
+.. _Twitter: https://twitter.com/
+.. _Zapier: https://zapier.com/
 
 :Copyright: 2015 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
 :License: MIT, see LICENSE for details.
