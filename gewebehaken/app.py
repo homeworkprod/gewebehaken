@@ -20,7 +20,7 @@ from .hooks.twitter import blueprint as twitter_blueprint
 
 def create_app(log_filename=None):
     """Create the actual application."""
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder=None)
 
     if log_filename:
         configure_logging(app, log_filename)
