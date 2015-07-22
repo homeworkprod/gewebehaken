@@ -11,7 +11,7 @@ Twitter web hooks
 """
 
 from blinker import signal
-from flask import Blueprint, request
+from flask import abort, Blueprint, request
 
 from ..util import log_incoming_request_data, respond_no_content
 
@@ -29,8 +29,8 @@ def followed():
     data = request.get_json()
     log_incoming_request_data(data)
 
-    screen_name = data['screen_name']
-    name = data['name']
+    screen_name = get_or_400(data, 'screen_name')
+    name = get_or_400(data, 'name')
 
     twitter_followed.send(
         None,
@@ -44,12 +44,19 @@ def mentioned():
     data = request.get_json()
     log_incoming_request_data(data)
 
-    screen_name = data['screen_name']
-    name = data['name']
-    url = data['url']
+    screen_name = get_or_400(data, 'screen_name')
+    name = get_or_400(data, 'name')
+    url = get_or_400(data, 'url')
 
     twitter_mentioned.send(
         None,
         screen_name=screen_name,
         name=name,
         url=url)
+
+
+def get_or_400(data, key):
+    try:
+        return data[key]
+    except KeyError:
+        abort(400, 'Missing key: ' + key)
