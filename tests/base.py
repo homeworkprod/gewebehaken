@@ -13,13 +13,14 @@ class AbstractAppTestCase(TestCase):
         self.client = app.test_client()
 
     def post_json(self, path, data):
+        """Send a POST request with a JSON body."""
         return self.client.post(path,
                                content_type='application/json',
                                data=json.dumps(data))
 
     def assert204(self, result):
-        assert result.status_code == 204
-        assert result.data == b''
+        self.assertEqual(result.status_code, 204)
+        self.assertEqual(result.data, b'')
 
 
 class AbstractHooksTestCase(AbstractAppTestCase):
@@ -32,4 +33,4 @@ class AbstractHooksTestCase(AbstractAppTestCase):
         self.received_signal_data.update(data)
 
     def assertReceivedSignalDataEqual(self, expected):
-        assert self.received_signal_data == expected
+        self.assertEqual(self.received_signal_data, expected)
