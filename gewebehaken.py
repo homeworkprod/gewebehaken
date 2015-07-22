@@ -12,6 +12,7 @@ Gewebehaken
 """
 
 from argparse import ArgumentParser
+from functools import wraps
 import logging
 from logging import FileHandler, Formatter
 from pprint import pformat
@@ -27,7 +28,19 @@ DEFAULT_LOG_FILENAME = 'incoming.log'
 app = Flask(__name__)
 
 
+def respond_no_content(f):
+    """Decorate a callable so that a ``204 No Content`` response is
+    returned after it is executed.
+    """
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        f(*args, **kwargs)
+        return Response(status=204)
+    return wrapper
+
+
 @app.route('/twitter/followed', methods=['POST'])
+@respond_no_content
 def followed():
     data = request.get_json()
     log_incoming_request_data(data)
@@ -35,10 +48,9 @@ def followed():
     screen_name = data['screen_name']
     name = data['name']
 
-    return Response(status=204)
-
 
 @app.route('/twitter/mentioned', methods=['POST'])
+@respond_no_content
 def mentioned():
     data = request.get_json()
     log_incoming_request_data(data)
@@ -46,8 +58,6 @@ def mentioned():
     screen_name = data['screen_name']
     name = data['name']
     url = data['url']
-
-    return Response(status=204)
 
 
 def log_incoming_request_data(data):
