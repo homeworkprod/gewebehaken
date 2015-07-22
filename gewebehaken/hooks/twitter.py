@@ -20,10 +20,10 @@ twitter_followed = signal('twitter-followed')
 twitter_mentioned = signal('twitter-mentioned')
 
 
-blueprint = Blueprint('blueprint', __name__)
+blueprint = Blueprint('twitter', __name__, url_prefix='/twitter')
 
 
-@blueprint.route('/twitter/followed', methods=['POST'])
+@blueprint.route('/followed', methods=['POST'])
 @respond_no_content
 def followed():
     data = request.get_json()
@@ -38,7 +38,7 @@ def followed():
         name=name)
 
 
-@blueprint.route('/twitter/mentioned', methods=['POST'])
+@blueprint.route('/mentioned', methods=['POST'])
 @respond_no_content
 def mentioned():
     data = request.get_json()
