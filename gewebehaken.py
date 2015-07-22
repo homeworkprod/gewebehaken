@@ -38,6 +38,18 @@ def followed():
     return Response(status=204)
 
 
+@app.route('/twitter/mentioned', methods=['POST'])
+def mentioned():
+    data = request.get_json()
+    log_incoming_request_data(data)
+
+    screen_name = data['screen_name']
+    name = data['name']
+    url = data['url']
+
+    return Response(status=204)
+
+
 def log_incoming_request_data(data):
     delimiter_line = '-' * 40
     log_message = delimiter_line + '\n' + pformat(data)
