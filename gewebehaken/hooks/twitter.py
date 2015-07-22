@@ -29,13 +29,10 @@ def followed():
     data = request.get_json()
     log_incoming_request_data(data)
 
-    screen_name = get_or_400(data, 'screen_name')
-    name = get_or_400(data, 'name')
+    keys = {'screen_name', 'name'}
+    fields = get_all_or_400(data, keys)
 
-    twitter_followed.send(
-        None,
-        screen_name=screen_name,
-        name=name)
+    twitter_followed.send(None, **fields)
 
 
 @blueprint.route('/mentioned', methods=['POST'])
@@ -44,15 +41,14 @@ def mentioned():
     data = request.get_json()
     log_incoming_request_data(data)
 
-    screen_name = get_or_400(data, 'screen_name')
-    name = get_or_400(data, 'name')
-    url = get_or_400(data, 'url')
+    keys = {'screen_name', 'name', 'url'}
+    fields = get_all_or_400(data, keys)
 
-    twitter_mentioned.send(
-        None,
-        screen_name=screen_name,
-        name=name,
-        url=url)
+    twitter_mentioned.send(None, **fields)
+
+
+def get_all_or_400(data, keys):
+    return {key: get_or_400(data, key) for key in keys}
 
 
 def get_or_400(data, key):
