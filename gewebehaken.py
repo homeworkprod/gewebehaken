@@ -17,12 +17,17 @@ import logging
 from logging import FileHandler, Formatter
 from pprint import pformat
 
+from blinker import signal
 from flask import Flask, request, Response
 
 
 DEFAULT_HOST = '127.0.0.1'
 DEFAULT_PORT = 5000
 DEFAULT_LOG_FILENAME = 'incoming.log'
+
+
+twitter_followed = signal('twitter-followed')
+twitter_mentioned = signal('twitter-mentioned')
 
 
 app = Flask(__name__)
@@ -48,6 +53,11 @@ def followed():
     screen_name = data['screen_name']
     name = data['name']
 
+    twitter_followed.send(
+        None,
+        screen_name=screen_name,
+        name=name)
+
 
 @app.route('/twitter/mentioned', methods=['POST'])
 @respond_no_content
@@ -58,6 +68,12 @@ def mentioned():
     screen_name = data['screen_name']
     name = data['name']
     url = data['url']
+
+    twitter_mentioned.send(
+        None,
+        screen_name=screen_name,
+        name=name,
+        url=url)
 
 
 def log_incoming_request_data(data):
