@@ -6,7 +6,7 @@ Gewebehaken
 ~~~~~~~~~~~
 
 :Copyright: 2015 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
-:Date: 28-Jun-2015
+:Date: 23-Jul-2015
 :License: MIT, see LICENSE for details.
 :Version: 0.0
 """
