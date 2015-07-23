@@ -232,10 +232,35 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
         self.assert204(result)
         self.assertReceivedSignalDataEqual(request_data)
 
-    def test_unknown_event(self):
+    def test_unknown_event_header_value(self):
         headers = self.build_headers('Some Unknown Hook')
+        request_data = {
+            "object_kind": "issue",
+            "user": {
+                "name": "Administrator",
+                "username": "root",
+                "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+            },
+            "object_attributes": {
+                "id": 301,
+                "title": "New API: create/update/delete file",
+                "assignee_id": 51,
+                "author_id": 51,
+                "project_id": 14,
+                "created_at": "2013-12-03T17:15:43Z",
+                "updated_at": "2013-12-03T17:15:43Z",
+                "position": 0,
+                "branch_name": None,
+                "description": "Create new API for manipulations with repository",
+                "milestone_id": None,
+                "state": "opened",
+                "iid": 23,
+                "url": "http://example.com/diaspora/issues/23",
+                "action": "open"
+            }
+        }
 
-        result = self.post_json('/gitlab', data={}, headers=headers)
+        result = self.post_json('/gitlab', data=request_data, headers=headers)
 
         self.assertEqual(result.status_code, 400)
 

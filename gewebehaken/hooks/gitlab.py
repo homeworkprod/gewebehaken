@@ -21,7 +21,8 @@ via "Settings → Web Hooks".
 from blinker import signal
 from flask import abort, Blueprint, request
 
-from ..util import get_all_or_400, log_incoming_request_data, respond_no_content
+from ..util import get_all_or_400, get_or_400, log_incoming_request_data, \
+                   respond_no_content
 
 
 gitlab_issue         = signal('gitlab-issue')
@@ -31,12 +32,12 @@ gitlab_push          = signal('gitlab-push')
 gitlab_tag_push      = signal('gitlab-tag-push')
 
 
-EVENT_TYPES_TO_SIGNALS = {
-    'Issue Hook':         gitlab_issue,
-    'Merge Request Hook': gitlab_merge_request,
-    'Note Hook':          gitlab_note,
-    'Push Hook':          gitlab_push,
-    'Tag Push Hook':      gitlab_tag_push,
+EVENT_TYPES_AND_OBJECT_KINDS_TO_SIGNALS = {
+    ('Issue Hook'        , 'issue'        ): gitlab_issue,
+    ('Merge Request Hook', 'merge_request'): gitlab_merge_request,
+    ('Note Hook'         , 'note'         ): gitlab_note,
+    ('Push Hook'         , 'push'         ): gitlab_push,
+    ('Tag Push Hook'     , 'tag_push'     ): gitlab_tag_push,
 }
 
 
@@ -49,13 +50,17 @@ def triggered():
     data = request.get_json()
     log_incoming_request_data(data)
 
-    signal = find_signal_for_event_type()
+    signal = find_signal_for_event_type(data)
     signal.send(None, **data)
 
 
-def find_signal_for_event_type():
+def find_signal_for_event_type(data):
     event_type = request.headers.get('X-Gitlab-Event')
+    object_kind = get_or_400(data, 'object_kind')
+
+    key = (event_type, object_kind)
+
     try:
-        return EVENT_TYPES_TO_SIGNALS[event_type]
+        return EVENT_TYPES_AND_OBJECT_KINDS_TO_SIGNALS[key]
     except KeyError:
         abort(400, 'Unknown event type.')
