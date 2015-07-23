@@ -18,6 +18,8 @@ via "Settings → Web Hooks".
 :License: MIT, see LICENSE for details.
 """
 
+from enum import Enum
+
 from blinker import signal
 from flask import abort, Blueprint, request
 
@@ -32,12 +34,24 @@ gitlab_push          = signal('gitlab-push')
 gitlab_tag_push      = signal('gitlab-tag-push')
 
 
-EVENT_TYPES_AND_OBJECT_KINDS_TO_SIGNALS = {
-    ('Issue Hook'        , 'issue'        ): gitlab_issue,
-    ('Merge Request Hook', 'merge_request'): gitlab_merge_request,
-    ('Note Hook'         , 'note'         ): gitlab_note,
-    ('Push Hook'         , 'push'         ): gitlab_push,
-    ('Tag Push Hook'     , 'tag_push'     ): gitlab_tag_push,
+EventType = Enum('EventType', 'issue merge_request note push tag_push')
+
+
+EVENT_TYPE_VALUES_AND_OBJECT_KINDS_TO_EVENT_TYPES = {
+    ('Issue Hook'        , 'issue'        ): EventType.issue,
+    ('Merge Request Hook', 'merge_request'): EventType.merge_request,
+    ('Note Hook'         , 'note'         ): EventType.note,
+    ('Push Hook'         , 'push'         ): EventType.push,
+    ('Tag Push Hook'     , 'tag_push'     ): EventType.tag_push,
+}
+
+
+EVENT_TYPES_TO_SIGNALS = {
+    EventType.issue:         gitlab_issue,
+    EventType.merge_request: gitlab_merge_request,
+    EventType.note:          gitlab_note,
+    EventType.push:          gitlab_push,
+    EventType.tag_push:      gitlab_tag_push,
 }
 
 
@@ -50,17 +64,23 @@ def triggered():
     data = request.get_json()
     log_incoming_request_data(data)
 
-    signal = find_signal_for_event_type(data)
+    event_type = determine_event_type(data)
+    signal = determine_signal(event_type, data)
+
     signal.send(None, **data)
 
 
-def find_signal_for_event_type(data):
-    event_type = request.headers.get('X-Gitlab-Event')
+def determine_event_type(data):
+    event_type_value = request.headers.get('X-Gitlab-Event')
     object_kind = get_or_400(data, 'object_kind')
 
-    key = (event_type, object_kind)
+    key = (event_type_value, object_kind)
 
     try:
-        return EVENT_TYPES_AND_OBJECT_KINDS_TO_SIGNALS[key]
+        return EVENT_TYPE_VALUES_AND_OBJECT_KINDS_TO_EVENT_TYPES[key]
     except KeyError:
         abort(400, 'Unknown event type.')
+
+
+def determine_signal(event_type, data):
+    return EVENT_TYPES_TO_SIGNALS[event_type]
