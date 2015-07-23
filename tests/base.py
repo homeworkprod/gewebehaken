@@ -12,11 +12,12 @@ class AbstractAppTestCase(TestCase):
         app = create_app()
         self.client = app.test_client()
 
-    def post_json(self, path, data):
+    def post_json(self, path, data, headers=None):
         """Send a POST request with a JSON body."""
         return self.client.post(path,
                                content_type='application/json',
-                               data=json.dumps(data))
+                               data=json.dumps(data),
+                               headers=headers)
 
     def assert204(self, result):
         self.assertEqual(result.status_code, 204)

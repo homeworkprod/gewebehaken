@@ -15,6 +15,7 @@ from logging import FileHandler, Formatter
 
 from flask import Flask
 
+from .hooks.gitlab import blueprint as gitlab_blueprint
 from .hooks.twitter import blueprint as twitter_blueprint
 
 
@@ -25,6 +26,7 @@ def create_app(log_filename=None):
     if log_filename:
         configure_logging(app, log_filename)
 
+    app.register_blueprint(gitlab_blueprint)
     app.register_blueprint(twitter_blueprint)
 
     return app
