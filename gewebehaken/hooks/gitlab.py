@@ -27,11 +27,14 @@ from ..util import get_all_or_400, get_or_400, log_incoming_request_data, \
                    respond_no_content
 
 
-gitlab_issue         = signal('gitlab-issue')
-gitlab_merge_request = signal('gitlab-merge-request')
-gitlab_note          = signal('gitlab-note')
-gitlab_push          = signal('gitlab-push')
-gitlab_tag_push      = signal('gitlab-tag-push')
+gitlab_commit_note        = signal('gitlab-commit-note')
+gitlab_issue              = signal('gitlab-issue')
+gitlab_issue_note         = signal('gitlab-issue-note')
+gitlab_merge_request      = signal('gitlab-merge-request')
+gitlab_merge_request_note = signal('gitlab-merge-request-note')
+gitlab_push               = signal('gitlab-push')
+gitlab_snippet_note       = signal('gitlab-snippet-note')
+gitlab_tag_push           = signal('gitlab-tag-push')
 
 
 EventType = Enum('EventType', 'issue merge_request note push tag_push')
@@ -49,9 +52,16 @@ EVENT_TYPE_VALUES_AND_OBJECT_KINDS_TO_EVENT_TYPES = {
 EVENT_TYPES_TO_SIGNALS = {
     EventType.issue:         gitlab_issue,
     EventType.merge_request: gitlab_merge_request,
-    EventType.note:          gitlab_note,
     EventType.push:          gitlab_push,
     EventType.tag_push:      gitlab_tag_push,
+}
+
+
+NOTEABLE_TYPES_TO_SIGNALS = {
+    'commit':       gitlab_commit_note,
+    'issue':        gitlab_issue_note,
+    'mergerequest': gitlab_merge_request_note,
+    'snippet':      gitlab_snippet_note,
 }
 
 
@@ -83,4 +93,12 @@ def determine_event_type(data):
 
 
 def determine_signal(event_type, data):
+    if event_type is EventType.note:
+        obj_attrs = get_or_400(data, 'object_attributes')
+        noteable_type = get_or_400(obj_attrs, 'noteable_type').lower()
+        try:
+            return NOTEABLE_TYPES_TO_SIGNALS[noteable_type]
+        except KeyError:
+            abort(400, 'Unknown noteable type.')
+
     return EVENT_TYPES_TO_SIGNALS[event_type]

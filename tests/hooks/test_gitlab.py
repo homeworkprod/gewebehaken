@@ -2,8 +2,10 @@
 
 from nose2.tools import params
 
-from gewebehaken.hooks.gitlab import gitlab_issue, gitlab_merge_request, \
-                                     gitlab_note, gitlab_push, gitlab_tag_push
+from gewebehaken.hooks.gitlab import gitlab_commit_note, gitlab_issue, \
+                                     gitlab_issue_note, gitlab_merge_request, \
+                                     gitlab_merge_request_note, gitlab_push, \
+                                     gitlab_snippet_note, gitlab_tag_push
 
 from ..base import AbstractHooksTestCase
 
@@ -111,6 +113,60 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                 "project_id": 5,
                 "repository": {
                     "name": "Gitlab Test",
+                    "url": "http://localhost/gitlab-org/gitlab-test.git",
+                    "description": "Aut reprehenderit ut est.",
+                    "homepage": "http://example.com/gitlab-org/gitlab-test"
+                },
+                "object_attributes": {
+                    "id": 1243,
+                    "note": "This is a commit comment. How does this work?",
+                    "noteable_type": "Commit",
+                    "author_id": 1,
+                    "created_at": "2015-05-17 18:08:09 UTC",
+                    "updated_at": "2015-05-17 18:08:09 UTC",
+                    "project_id": 5,
+                    "attachment": None,
+                    "line_code": "bec9703f7a456cd2b4ab5fb3220ae016e3e394e3_0_1",
+                    "commit_id": "cfe32cf61b73a0d5e9f13e774abde7ff789b1660",
+                    "noteable_id": None,
+                    "system": False,
+                    "st_diff": {
+                        "diff": "--- /dev/null\n+++ b/six\n@@ -0,0 +1 @@\n+Subproject commit 409f37c4f05865e4fb208c771485f211a22c4c2d\n",
+                        "new_path": "six",
+                        "old_path": "six",
+                        "a_mode": "0",
+                        "b_mode": "160000",
+                        "new_file": True,
+                        "renamed_file": False,
+                        "deleted_file": False
+                    },
+                    "url": "http://example.com/gitlab-org/gitlab-test/commit/cfe32cf61b73a0d5e9f13e774abde7ff789b1660#note_1243"
+                },
+                "commit": {
+                    "id": "cfe32cf61b73a0d5e9f13e774abde7ff789b1660",
+                    "message": "Add submodule\n\nSigned-off-by: Dmitriy Zaporozhets \u003cdmitriy.zaporozhets@gmail.com\u003e\n",
+                    "timestamp": "2014-02-27T10:06:20+02:00",
+                    "url": "http://example.com/gitlab-org/gitlab-test/commit/cfe32cf61b73a0d5e9f13e774abde7ff789b1660",
+                    "author": {
+                        "name": "Dmitriy Zaporozhets",
+                        "email": "dmitriy.zaporozhets@gmail.com"
+                    }
+                }
+            },
+            gitlab_commit_note,
+        ),
+        (
+            'Note Hook',
+            {
+                "object_kind": "note",
+                "user": {
+                    "name": "Adminstrator",
+                    "username": "root",
+                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+                },
+                "project_id": 5,
+                "repository": {
+                    "name": "Gitlab Test",
                     "url": "http://example.com/gitlab-org/gitlab-test.git",
                     "description": "Aut reprehenderit ut est.",
                     "homepage": "http://example.com/gitlab-org/gitlab-test"
@@ -147,7 +203,133 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "iid": 17
                 }
             },
-            gitlab_note,
+            gitlab_issue_note,
+        ),
+        (
+        'Note Hook',
+        {
+                "object_kind": "note",
+                "user": {
+                    "name": "Administrator",
+                    "username": "root",
+                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+                },
+                "project_id": 5,
+                "repository": {
+                    "name": "Gitlab Test",
+                    "url": "http://example.com/gitlab-org/gitlab-test.git",
+                    "description": "Aut reprehenderit ut est.",
+                    "homepage": "http://example.com/gitlab-org/gitlab-test"
+                },
+                "object_attributes": {
+                    "id": 1244,
+                    "note": "This MR needs work.",
+                    "noteable_type": "MergeRequest",
+                    "author_id": 1,
+                    "created_at": "2015-05-17 18:21:36 UTC",
+                    "updated_at": "2015-05-17 18:21:36 UTC",
+                    "project_id": 5,
+                    "attachment": None,
+                    "line_code": None,
+                    "commit_id": "",
+                    "noteable_id": 7,
+                    "system": False,
+                    "st_diff": None,
+                    "url": "http://example.com/gitlab-org/gitlab-test/merge_requests/1#note_1244"
+                },
+                "merge_request": {
+                    "id": 7,
+                    "target_branch": "markdown",
+                    "source_branch": "master",
+                    "source_project_id": 5,
+                    "author_id": 8,
+                    "assignee_id": 28,
+                    "title": "Tempora et eos debitis quae laborum et.",
+                    "created_at": "2015-03-01 20:12:53 UTC",
+                    "updated_at": "2015-03-21 18:27:27 UTC",
+                    "milestone_id": 11,
+                    "state": "opened",
+                    "merge_status": "cannot_be_merged",
+                    "target_project_id": 5,
+                    "iid": 1,
+                    "description": "Et voluptas corrupti assumenda temporibus. Architecto cum animi eveniet amet asperiores. Vitae numquam voluptate est natus sit et ad id.",
+                    "position": 0,
+                    "locked_at": None,
+                    "source": {
+                        "name": "Gitlab Test",
+                        "ssh_url": "git@example.com:gitlab-org/gitlab-test.git",
+                        "http_url": "http://example.com/gitlab-org/gitlab-test.git",
+                        "namespace": "Gitlab Org",
+                        "visibility_level": 10
+                    },
+                    "target": {
+                        "name": "Gitlab Test",
+                        "ssh_url": "git@example.com:gitlab-org/gitlab-test.git",
+                        "http_url": "http://example.com/gitlab-org/gitlab-test.git",
+                        "namespace": "Gitlab Org",
+                        "visibility_level": 10
+                    },
+                    "last_commit": {
+                        "id": "562e173be03b8ff2efb05345d12df18815438a4b",
+                        "message": "Merge branch 'another-branch' into 'master'\n\nCheck in this test\n",
+                        "timestamp": "2015-04-08T21: 00:25-07:00",
+                        "url": "http://example.com/gitlab-org/gitlab-test/commit/562e173be03b8ff2efb05345d12df18815438a4b",
+                        "author": {
+                            "name": "John Smith",
+                            "email": "john@example.com"
+                        }
+                    }
+                }
+            },
+            gitlab_merge_request_note,
+        ),
+        (
+            'Note Hook',
+            {
+                "object_kind": "note",
+                "user": {
+                    "name": "Administrator",
+                    "username": "root",
+                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+                },
+                "project_id": 5,
+                "repository": {
+                    "name": "Gitlab Test",
+                    "url": "http://example.com/gitlab-org/gitlab-test.git",
+                    "description": "Aut reprehenderit ut est.",
+                    "homepage": "http://example.com/gitlab-org/gitlab-test"
+                },
+                "object_attributes": {
+                    "id": 1245,
+                    "note": "Is this snippet doing what it's supposed to be doing?",
+                    "noteable_type": "Snippet",
+                    "author_id": 1,
+                    "created_at": "2015-05-17 18:35:50 UTC",
+                    "updated_at": "2015-05-17 18:35:50 UTC",
+                    "project_id": 5,
+                    "attachment": None,
+                    "line_code": None,
+                    "commit_id": "",
+                    "noteable_id": 53,
+                    "system": False,
+                    "st_diff": None,
+                    "url": "http://example.com/gitlab-org/gitlab-test/snippets/53#note_1245"
+                },
+                "snippet": {
+                    "id": 53,
+                    "title": "test",
+                    "content": "puts 'Hello world'",
+                    "author_id": 1,
+                    "project_id": 5,
+                    "created_at": "2015-04-09 02:40:38 UTC",
+                    "updated_at": "2015-04-09 02:40:38 UTC",
+                    "file_name": "test.rb",
+                    "expires_at": None,
+                    "type": "ProjectSnippet",
+                    "visibility_level": 0
+                }
+            },
+            gitlab_snippet_note,
         ),
         (
             'Push Hook',
