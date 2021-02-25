@@ -1,18 +1,25 @@
-from nose2.tools import params
+import pytest
 
-from gewebehaken.hooks.gitlab import gitlab_commit_note, gitlab_issue, \
-                                     gitlab_issue_note, gitlab_merge_request, \
-                                     gitlab_merge_request_note, gitlab_push, \
-                                     gitlab_snippet_note, gitlab_tag_push
+from gewebehaken.hooks.gitlab import (
+    gitlab_commit_note,
+    gitlab_issue,
+    gitlab_issue_note,
+    gitlab_merge_request,
+    gitlab_merge_request_note,
+    gitlab_push,
+    gitlab_snippet_note,
+    gitlab_tag_push,
+)
 
-from ..base import AbstractHooksTestCase
+from ..base import post_json
 
 
-class GitlabHooksTestCase(AbstractHooksTestCase):
+# Examples have been taken from GitLab's built-in help on web hooks.
 
-    # Examples were taken from GitLab's built-in help on web hooks.
 
-    @params(
+@pytest.mark.parametrize(
+    'event_type, request_data, expected_signal',
+    [
         (
             'Issue Hook',
             {
@@ -20,7 +27,7 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                 "user": {
                     "name": "Administrator",
                     "username": "root",
-                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon",
                 },
                 "object_attributes": {
                     "id": 301,
@@ -37,8 +44,8 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "state": "opened",
                     "iid": 23,
                     "url": "http://example.com/diaspora/issues/23",
-                    "action": "open"
-                }
+                    "action": "open",
+                },
             },
             gitlab_issue,
         ),
@@ -49,7 +56,7 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                 "user": {
                     "name": "Administrator",
                     "username": "root",
-                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon",
                 },
                 "object_attributes": {
                     "id": 99,
@@ -74,14 +81,14 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                         "ssh_url": "ssh://git@example.com/awesome_space/awesome_project.git",
                         "http_url": "http://example.com/awesome_space/awesome_project.git",
                         "visibility_level": 20,
-                        "namespace": "awesome_space"
+                        "namespace": "awesome_space",
                     },
                     "target": {
                         "name": "awesome_project",
                         "ssh_url": "ssh://git@example.com/awesome_space/awesome_project.git",
                         "http_url": "http://example.com/awesome_space/awesome_project.git",
                         "visibility_level": 20,
-                        "namespace": "awesome_space"
+                        "namespace": "awesome_space",
                     },
                     "last_commit": {
                         "id": "da1560886d4f094c3e6c9ef40349f7d38b5d27d7",
@@ -90,12 +97,12 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                         "url": "http://example.com/awesome_space/awesome_project/commits/da1560886d4f094c3e6c9ef40349f7d38b5d27d7",
                         "author": {
                             "name": "GitLab dev user",
-                            "email": "gitlabdev@dv6700.(none)"
-                        }
+                            "email": "gitlabdev@dv6700.(none)",
+                        },
                     },
                     "url": "http://example.com/diaspora/merge_requests/1",
-                    "action": "open"
-                }
+                    "action": "open",
+                },
             },
             gitlab_merge_request,
         ),
@@ -106,14 +113,14 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                 "user": {
                     "name": "Adminstrator",
                     "username": "root",
-                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon",
                 },
                 "project_id": 5,
                 "repository": {
                     "name": "Gitlab Test",
                     "url": "http://localhost/gitlab-org/gitlab-test.git",
                     "description": "Aut reprehenderit ut est.",
-                    "homepage": "http://example.com/gitlab-org/gitlab-test"
+                    "homepage": "http://example.com/gitlab-org/gitlab-test",
                 },
                 "object_attributes": {
                     "id": 1243,
@@ -136,9 +143,9 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                         "b_mode": "160000",
                         "new_file": True,
                         "renamed_file": False,
-                        "deleted_file": False
+                        "deleted_file": False,
                     },
-                    "url": "http://example.com/gitlab-org/gitlab-test/commit/cfe32cf61b73a0d5e9f13e774abde7ff789b1660#note_1243"
+                    "url": "http://example.com/gitlab-org/gitlab-test/commit/cfe32cf61b73a0d5e9f13e774abde7ff789b1660#note_1243",
                 },
                 "commit": {
                     "id": "cfe32cf61b73a0d5e9f13e774abde7ff789b1660",
@@ -147,9 +154,9 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "url": "http://example.com/gitlab-org/gitlab-test/commit/cfe32cf61b73a0d5e9f13e774abde7ff789b1660",
                     "author": {
                         "name": "Dmitriy Zaporozhets",
-                        "email": "dmitriy.zaporozhets@gmail.com"
-                    }
-                }
+                        "email": "dmitriy.zaporozhets@gmail.com",
+                    },
+                },
             },
             gitlab_commit_note,
         ),
@@ -160,14 +167,14 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                 "user": {
                     "name": "Adminstrator",
                     "username": "root",
-                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon",
                 },
                 "project_id": 5,
                 "repository": {
                     "name": "Gitlab Test",
                     "url": "http://example.com/gitlab-org/gitlab-test.git",
                     "description": "Aut reprehenderit ut est.",
-                    "homepage": "http://example.com/gitlab-org/gitlab-test"
+                    "homepage": "http://example.com/gitlab-org/gitlab-test",
                 },
                 "object_attributes": {
                     "id": 1241,
@@ -183,7 +190,7 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "noteable_id": 92,
                     "system": False,
                     "st_diff": None,
-                    "url": "http://example.com/gitlab-org/gitlab-test/issues/17#note_1241"
+                    "url": "http://example.com/gitlab-org/gitlab-test/issues/17#note_1241",
                 },
                 "issue": {
                     "id": 92,
@@ -198,26 +205,26 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "description": "test",
                     "milestone_id": None,
                     "state": "closed",
-                    "iid": 17
-                }
+                    "iid": 17,
+                },
             },
             gitlab_issue_note,
         ),
         (
-        'Note Hook',
-        {
+            'Note Hook',
+            {
                 "object_kind": "note",
                 "user": {
                     "name": "Administrator",
                     "username": "root",
-                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon",
                 },
                 "project_id": 5,
                 "repository": {
                     "name": "Gitlab Test",
                     "url": "http://example.com/gitlab-org/gitlab-test.git",
                     "description": "Aut reprehenderit ut est.",
-                    "homepage": "http://example.com/gitlab-org/gitlab-test"
+                    "homepage": "http://example.com/gitlab-org/gitlab-test",
                 },
                 "object_attributes": {
                     "id": 1244,
@@ -233,7 +240,7 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "noteable_id": 7,
                     "system": False,
                     "st_diff": None,
-                    "url": "http://example.com/gitlab-org/gitlab-test/merge_requests/1#note_1244"
+                    "url": "http://example.com/gitlab-org/gitlab-test/merge_requests/1#note_1244",
                 },
                 "merge_request": {
                     "id": 7,
@@ -258,14 +265,14 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                         "ssh_url": "git@example.com:gitlab-org/gitlab-test.git",
                         "http_url": "http://example.com/gitlab-org/gitlab-test.git",
                         "namespace": "Gitlab Org",
-                        "visibility_level": 10
+                        "visibility_level": 10,
                     },
                     "target": {
                         "name": "Gitlab Test",
                         "ssh_url": "git@example.com:gitlab-org/gitlab-test.git",
                         "http_url": "http://example.com/gitlab-org/gitlab-test.git",
                         "namespace": "Gitlab Org",
-                        "visibility_level": 10
+                        "visibility_level": 10,
                     },
                     "last_commit": {
                         "id": "562e173be03b8ff2efb05345d12df18815438a4b",
@@ -274,10 +281,10 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                         "url": "http://example.com/gitlab-org/gitlab-test/commit/562e173be03b8ff2efb05345d12df18815438a4b",
                         "author": {
                             "name": "John Smith",
-                            "email": "john@example.com"
-                        }
-                    }
-                }
+                            "email": "john@example.com",
+                        },
+                    },
+                },
             },
             gitlab_merge_request_note,
         ),
@@ -288,14 +295,14 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                 "user": {
                     "name": "Administrator",
                     "username": "root",
-                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
+                    "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon",
                 },
                 "project_id": 5,
                 "repository": {
                     "name": "Gitlab Test",
                     "url": "http://example.com/gitlab-org/gitlab-test.git",
                     "description": "Aut reprehenderit ut est.",
-                    "homepage": "http://example.com/gitlab-org/gitlab-test"
+                    "homepage": "http://example.com/gitlab-org/gitlab-test",
                 },
                 "object_attributes": {
                     "id": 1245,
@@ -311,7 +318,7 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "noteable_id": 53,
                     "system": False,
                     "st_diff": None,
-                    "url": "http://example.com/gitlab-org/gitlab-test/snippets/53#note_1245"
+                    "url": "http://example.com/gitlab-org/gitlab-test/snippets/53#note_1245",
                 },
                 "snippet": {
                     "id": 53,
@@ -324,8 +331,8 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "file_name": "test.rb",
                     "expires_at": None,
                     "type": "ProjectSnippet",
-                    "visibility_level": 0
-                }
+                    "visibility_level": 0,
+                },
             },
             gitlab_snippet_note,
         ),
@@ -345,9 +352,9 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "url": "git@example.com:mike/diasporadiaspora.git",
                     "description": "",
                     "homepage": "http://example.com/mike/diaspora",
-                    "git_http_url":"http://example.com/mike/diaspora.git",
-                    "git_ssh_url":"git@example.com:mike/diaspora.git",
-                    "visibility_level": 0
+                    "git_http_url": "http://example.com/mike/diaspora.git",
+                    "git_ssh_url": "git@example.com:mike/diaspora.git",
+                    "visibility_level": 0,
                 },
                 "commits": [
                     {
@@ -357,8 +364,8 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                         "url": "http://example.com/mike/diaspora/commit/b6568db1bc1dcd7f8b4d5a946b0b91f9dacd7327",
                         "author": {
                             "name": "Jordi Mallach",
-                            "email": "jordi@softcatala.org"
-                        }
+                            "email": "jordi@softcatala.org",
+                        },
                     },
                     {
                         "id": "da1560886d4f094c3e6c9ef40349f7d38b5d27d7",
@@ -367,11 +374,11 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                         "url": "http://example.com/mike/diaspora/commit/da1560886d4f094c3e6c9ef40349f7d38b5d27d7",
                         "author": {
                             "name": "GitLab dev user",
-                            "email": "gitlabdev@dv6700.(none)"
-                        }
-                    }
+                            "email": "gitlabdev@dv6700.(none)",
+                        },
+                    },
                 ],
-                "total_commits_count": 4
+                "total_commits_count": 4,
             },
             gitlab_push,
         ),
@@ -390,61 +397,66 @@ class GitlabHooksTestCase(AbstractHooksTestCase):
                     "url": "ssh://git@example.com/jsmith/example.git",
                     "description": "",
                     "homepage": "http://example.com/jsmith/example",
-                    "git_http_url":"http://example.com/jsmith/example.git",
-                    "git_ssh_url":"git@example.com:jsmith/example.git",
-                    "visibility_level": 0
+                    "git_http_url": "http://example.com/jsmith/example.git",
+                    "git_ssh_url": "git@example.com:jsmith/example.git",
+                    "visibility_level": 0,
                 },
                 "commits": [],
-                "total_commits_count": 0
+                "total_commits_count": 0,
             },
             gitlab_tag_push,
         ),
-    )
-    def test_hook_event(self, event_type, request_data, expected_signal):
-        @expected_signal.connect
-        def receive_signal(sender, **data):
-            self.storeReceivedSignalData(data)
+    ],
+)
+def test_hook_event(client, event_type, request_data, expected_signal):
+    received_signal_data = {}
 
-        headers = self.build_headers(event_type)
+    @expected_signal.connect
+    def receive_signal(sender, **data):
+        received_signal_data.update(data)
 
-        result = self.post_json('/gitlab', data=request_data, headers=headers)
+    headers = build_headers(event_type)
 
-        self.assert204(result)
-        self.assertReceivedSignalDataEqual(request_data)
+    response = post_json(client, '/gitlab', data=request_data, headers=headers)
 
-    def test_unknown_event_header_value(self):
-        headers = self.build_headers('Some Unknown Hook')
-        request_data = {
-            "object_kind": "issue",
-            "user": {
-                "name": "Administrator",
-                "username": "root",
-                "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon"
-            },
-            "object_attributes": {
-                "id": 301,
-                "title": "New API: create/update/delete file",
-                "assignee_id": 51,
-                "author_id": 51,
-                "project_id": 14,
-                "created_at": "2013-12-03T17:15:43Z",
-                "updated_at": "2013-12-03T17:15:43Z",
-                "position": 0,
-                "branch_name": None,
-                "description": "Create new API for manipulations with repository",
-                "milestone_id": None,
-                "state": "opened",
-                "iid": 23,
-                "url": "http://example.com/diaspora/issues/23",
-                "action": "open"
-            }
-        }
+    assert response.status_code == 204
+    assert received_signal_data == request_data
 
-        result = self.post_json('/gitlab', data=request_data, headers=headers)
 
-        self.assertEqual(result.status_code, 400)
+def test_unknown_event_header_value(client):
+    headers = build_headers('Some Unknown Hook')
+    request_data = {
+        "object_kind": "issue",
+        "user": {
+            "name": "Administrator",
+            "username": "root",
+            "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40\u0026d=identicon",
+        },
+        "object_attributes": {
+            "id": 301,
+            "title": "New API: create/update/delete file",
+            "assignee_id": 51,
+            "author_id": 51,
+            "project_id": 14,
+            "created_at": "2013-12-03T17:15:43Z",
+            "updated_at": "2013-12-03T17:15:43Z",
+            "position": 0,
+            "branch_name": None,
+            "description": "Create new API for manipulations with repository",
+            "milestone_id": None,
+            "state": "opened",
+            "iid": 23,
+            "url": "http://example.com/diaspora/issues/23",
+            "action": "open",
+        },
+    }
 
-    def build_headers(self, event_type):
-        return [
-            ('X-Gitlab-Event', event_type),
-        ]
+    response = post_json(client, '/gitlab', data=request_data, headers=headers)
+
+    assert response.status_code == 400
+
+
+def build_headers(event_type):
+    return [
+        ('X-Gitlab-Event', event_type),
+    ]
