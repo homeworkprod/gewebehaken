@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from gewebehaken.hooks.twitter import twitter_followed, twitter_mentioned
 
 from ..base import AbstractHooksTestCase

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from nose2.tools import params
 
 from gewebehaken.hooks.gitlab import gitlab_commit_note, gitlab_issue, \
