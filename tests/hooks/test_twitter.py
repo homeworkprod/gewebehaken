@@ -1,7 +1,5 @@
 from gewebehaken.hooks.twitter import twitter_followed, twitter_mentioned
 
-from ..base import post_json
-
 
 def test_followed(client):
     received_signal_data = {}
@@ -15,7 +13,7 @@ def test_followed(client):
         'name': 'Example User',
     }
 
-    response = post_json(client, '/twitter/followed', data=request_data)
+    response = client.post('/twitter/followed', json=request_data)
 
     assert response.status_code == 204
     assert received_signal_data == request_data
@@ -34,7 +32,7 @@ def test_mentioned(client):
         'url': 'http://twitter.com/example',
     }
 
-    response = post_json(client, '/twitter/mentioned', data=request_data)
+    response = client.post('/twitter/mentioned', json=request_data)
 
     assert response.status_code == 204
     assert received_signal_data == request_data

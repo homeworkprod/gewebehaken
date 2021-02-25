@@ -11,8 +11,6 @@ from gewebehaken.hooks.gitlab import (
     gitlab_tag_push,
 )
 
-from ..base import post_json
-
 
 # Examples have been taken from GitLab's built-in help on web hooks.
 
@@ -417,7 +415,7 @@ def test_hook_event(client, event_type, request_data, expected_signal):
 
     headers = build_headers(event_type)
 
-    response = post_json(client, '/gitlab', data=request_data, headers=headers)
+    response = client.post('/gitlab', json=request_data, headers=headers)
 
     assert response.status_code == 204
     assert received_signal_data == request_data
@@ -451,7 +449,7 @@ def test_unknown_event_header_value(client):
         },
     }
 
-    response = post_json(client, '/gitlab', data=request_data, headers=headers)
+    response = client.post('/gitlab', json=request_data, headers=headers)
 
     assert response.status_code == 400
 
