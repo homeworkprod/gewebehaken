@@ -40,7 +40,7 @@ def get_or_400(data, key):
 def log_incoming_request_data(data):
     delimiter_line = '-' * 40
     log_message = delimiter_line + '\n' + pformat(data)
-    current_app.logger.warn(log_message)
+    current_app.logger.warning(log_message)
 
 
 def respond_no_content(f):
