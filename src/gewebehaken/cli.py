@@ -33,7 +33,7 @@ def parse_args():
         '--host',
         dest='host',
         default=DEFAULT_HOST,
-        help='the host to listen on [default: {}]'.format(DEFAULT_HOST),
+        help=f'the host to listen on [default: {DEFAULT_HOST}]',
         metavar='HOST',
     )
 
@@ -42,7 +42,7 @@ def parse_args():
         dest='port',
         type=int,
         default=DEFAULT_PORT,
-        help='the port to listen on [default: {:d}]'.format(DEFAULT_PORT),
+        help=f'the port to listen on [default: {DEFAULT_PORT:d}]',
         metavar='PORT',
     )
 
