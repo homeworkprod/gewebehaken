@@ -11,6 +11,7 @@ def test_followed(client):
     request_data = {
         'screen_name': 'example',
         'name': 'Example User',
+        'target_account_name': 'myproject',
     }
 
     response = client.post('/twitter/followed', json=request_data)
@@ -30,6 +31,7 @@ def test_mentioned(client):
         'screen_name': 'example',
         'name': 'Example User',
         'url': 'http://twitter.com/example',
+        'target_account_name': 'myproject',
     }
 
     response = client.post('/twitter/mentioned', json=request_data)

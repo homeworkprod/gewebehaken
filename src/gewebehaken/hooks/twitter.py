@@ -35,7 +35,7 @@ def followed():
     data = request.get_json()
     log_incoming_request_data(data)
 
-    keys = {'screen_name', 'name'}
+    keys = {'screen_name', 'name', 'target_account_name'}
     fields = get_all_or_400(data, keys)
 
     twitter_followed.send(None, **fields)
@@ -47,7 +47,7 @@ def mentioned():
     data = request.get_json()
     log_incoming_request_data(data)
 
-    keys = {'screen_name', 'name', 'url'}
+    keys = {'screen_name', 'name', 'url', 'target_account_name'}
     fields = get_all_or_400(data, keys)
 
     twitter_mentioned.send(None, **fields)
