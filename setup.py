@@ -8,5 +8,6 @@ setup(
     author='Jochen Kupperschmidt',
     author_email='homework@nwsnet.de',
     url='http://homework.nwsnet.de/',
+    package_dir={'': 'src'},
     packages=['gewebehaken'],
 )
