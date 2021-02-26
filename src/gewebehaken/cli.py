@@ -10,9 +10,12 @@ Command-line interface
 
 from argparse import ArgumentParser
 
+from .app import create_app
+
 
 DEFAULT_HOST = '127.0.0.1'
 DEFAULT_PORT = 5000
+DEFAULT_LOG_FILENAME = 'incoming.log'
 
 
 def parse_args():
@@ -42,3 +45,9 @@ def parse_args():
         metavar='PORT')
 
     return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    app = create_app(log_filename=DEFAULT_LOG_FILENAME)
+    app.run(host=args.host, port=args.port, debug=args.debug)
