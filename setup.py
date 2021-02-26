@@ -1,13 +1,5 @@
-from setuptools import setup
+import setuptools
 
 
-setup(
-    name='Gewebehaken',
-    version='0.0',
-    description='Webhooks.',
-    author='Jochen Kupperschmidt',
-    author_email='homework@nwsnet.de',
-    url='http://homework.nwsnet.de/',
-    package_dir={'': 'src'},
-    packages=['gewebehaken'],
-)
+if __name__ == '__main__':
+    setuptools.setup()
