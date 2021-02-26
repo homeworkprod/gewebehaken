@@ -26,14 +26,16 @@ def parse_args():
         dest='debug',
         action='store_true',
         default=False,
-        help='debug mode')
+        help='debug mode',
+    )
 
     parser.add_argument(
         '--host',
         dest='host',
         default=DEFAULT_HOST,
         help='the host to listen on [default: {}]'.format(DEFAULT_HOST),
-        metavar='HOST')
+        metavar='HOST',
+    )
 
     parser.add_argument(
         '--port',
@@ -41,13 +43,15 @@ def parse_args():
         type=int,
         default=DEFAULT_PORT,
         help='the port to listen on [default: {:d}]'.format(DEFAULT_PORT),
-        metavar='PORT')
+        metavar='PORT',
+    )
 
     parser.add_argument(
         '--logfile',
         dest='logfile',
         help='logfile to write incoming webhook requests to',
-        metavar='LOGFILE')
+        metavar='LOGFILE',
+    )
 
     return parser.parse_args()
 

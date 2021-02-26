@@ -47,8 +47,10 @@ def respond_no_content(f):
     """Decorate a callable so that a ``204 No Content`` response is
     returned after it is executed.
     """
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         f(*args, **kwargs)
         return Response(status=204)
+
     return wrapper

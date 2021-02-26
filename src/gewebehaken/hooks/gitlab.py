@@ -21,8 +21,12 @@ from enum import Enum
 from blinker import signal
 from flask import abort, Blueprint, request
 
-from ..util import get_all_or_400, get_or_400, log_incoming_request_data, \
-                   respond_no_content
+from ..util import (
+    get_all_or_400,
+    get_or_400,
+    log_incoming_request_data,
+    respond_no_content,
+)
 
 
 gitlab_commit_note        = signal('gitlab-commit-note')
