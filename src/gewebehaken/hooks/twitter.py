@@ -12,7 +12,7 @@ below.
 .. _Twitter: https://twitter.com/
 .. _Zapier: https://zapier.com/
 
-:Copyright: 2015 `Jochen Kupperschmidt <http://homework.nwsnet.de/>`_
+:Copyright: 2015-2021 Jochen Kupperschmidt
 :License: MIT, see LICENSE for details.
 """
 
