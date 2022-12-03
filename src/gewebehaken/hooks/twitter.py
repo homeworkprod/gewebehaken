@@ -17,7 +17,7 @@ below.
 """
 
 from blinker import signal
-from flask import abort, Blueprint, request
+from flask import Blueprint, request
 
 from ..util import get_all_or_400, log_incoming_request_data, respond_no_content
 
