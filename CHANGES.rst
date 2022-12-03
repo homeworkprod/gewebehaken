@@ -5,6 +5,8 @@ Changelog
 0.3 (unreleased)
 -----------------
 
+- Added support for Python 3.10.
+
 - Updated blinker to v1.5 (from v1.4).
 
 - Updated Flask to v2.2.2 (from v1.1.2).
