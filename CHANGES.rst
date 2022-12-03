@@ -13,6 +13,8 @@ Changelog
 
 - Updated Werkzeug to v2.2.2 (from v1.0.1).
 
+- Move continuous integration from Travis CI to GitHub Actions.
+
 
 0.2 (2022-12-03)
 ----------------
