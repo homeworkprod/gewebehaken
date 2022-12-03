@@ -5,6 +5,8 @@ Changelog
 0.3 (unreleased)
 -----------------
 
+- Updated blinker to v1.5 (from v1.4).
+
 
 0.2 (2022-12-03)
 ----------------
