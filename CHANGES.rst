@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.3 (unreleased)
+0.3 (2022-12-04)
 -----------------
 
 - Added support for Python 3.10.
