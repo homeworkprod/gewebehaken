@@ -7,6 +7,10 @@ Changelog
 
 - Updated blinker to v1.5 (from v1.4).
 
+- Updated Flask to v2.2.2 (from v1.1.2).
+
+- Updated Werkzeug to v2.2.2 (from v1.0.1).
+
 
 0.2 (2022-12-03)
 ----------------
