@@ -4,7 +4,7 @@ Gewebehaken
 
 Utilities
 
-:Copyright: 2015-2021 Jochen Kupperschmidt
+:Copyright: 2015-2022 Jochen Kupperschmidt
 :License: MIT, see LICENSE for details.
 """
 
