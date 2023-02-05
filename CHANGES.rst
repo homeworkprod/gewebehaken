@@ -5,6 +5,8 @@ Changelog
 0.4 (unreleased)
 ----------------
 
+- Added support for Python 3.11.
+
 
 0.3 (2022-12-04)
 -----------------
