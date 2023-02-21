@@ -7,6 +7,8 @@ Changelog
 
 - Added support for Python 3.11.
 
+- Updated Werkzeug to v2.2.3 (from v2.2.3).
+
 
 0.3 (2022-12-04)
 -----------------
