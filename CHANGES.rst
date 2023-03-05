@@ -7,9 +7,9 @@ Changelog
 
 - Added support for Python 3.11.
 
-- Updated Flask to v2.2.3 (from v2.2.3).
+- Updated Flask to v2.2.3 (from v2.2.2).
 
-- Updated Werkzeug to v2.2.3 (from v2.2.3).
+- Updated Werkzeug to v2.2.3 (from v2.2.2).
 
 
 0.3 (2022-12-04)
