@@ -12,7 +12,7 @@ below.
 .. _Twitter: https://twitter.com/
 .. _Zapier: https://zapier.com/
 
-:Copyright: 2015-2022 Jochen Kupperschmidt
+:Copyright: 2015-2024 Jochen Kupperschmidt
 :License: MIT, see LICENSE for details.
 """
 

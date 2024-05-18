@@ -9,7 +9,7 @@ Currently supported:
 - GitLab
 - Twitter (via Zapier)
 
-:Copyright: 2015-2022 `Jochen Kupperschmidt <https://homework.nwsnet.de/>`_
+:Copyright: 2015-2024 `Jochen Kupperschmidt <https://homework.nwsnet.de/>`_
 :License: MIT, see LICENSE for details.
 
 
