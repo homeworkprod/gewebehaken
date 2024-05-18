@@ -26,7 +26,7 @@ Code Status
 Requirements
 ============
 
-- Python 3.7+
+- Python 3.9+
 - Dependencies: blinker_, Flask_, Werkzeug_
 
 .. _blinker: https://blinker.readthedocs.io/

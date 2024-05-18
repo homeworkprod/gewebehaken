@@ -7,6 +7,8 @@ Changelog
 
 - Added support for Python 3.11.
 
+- Dropped support for Python 3.7 and 3.8.
+
 - Updated Flask to v2.2.3 (from v2.2.2).
 
 - Updated Werkzeug to v2.2.3 (from v2.2.2).
