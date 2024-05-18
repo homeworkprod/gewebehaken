@@ -11,7 +11,7 @@ Changelog
 
 - Updated blinker to v1.8.2 (from v1.5).
 
-- Updated Flask to v2.2.3 (from v2.2.2).
+- Updated Flask to v3.0.3 (from v2.2.2).
 
 - Updated Werkzeug to v3.0.3 (from v2.2.2).
 
