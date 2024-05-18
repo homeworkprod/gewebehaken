@@ -13,7 +13,7 @@ Changelog
 
 - Updated Flask to v2.2.3 (from v2.2.2).
 
-- Updated Werkzeug to v2.2.3 (from v2.2.2).
+- Updated Werkzeug to v3.0.3 (from v2.2.2).
 
 
 0.3 (2022-12-04)
